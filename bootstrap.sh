@@ -16,11 +16,11 @@ if grep -q "Microsoft" /proc/version; then
 	ln -s "/mnt/c/user/sebastian.johansson/Downloads" "${HOME}/Downloads"
 	ln -s "/mnt/c/user/sebastian.johansson/Projects" "${HOME}/Projects"
 
-	cp -r "${SCRIPT_PATH}/windows/etc" "/etc/"
+	rsync -av "${SCRIPT_PATH}/windows/etc" "/etc/"
 fi
 
-cp -r "${SCRIPT_PATH}/home/"		"${HOME}/"
-cp -r "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
-cp -r "${SCRIPT_PATH}/etc/"		"/etc/"
+rsync -av "${SCRIPT_PATH}/home/"		"${HOME}/"
+rsync -av "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
+rsync -av "${SCRIPT_PATH}/etc/"		"/etc/"
 	
 unset BOOTSTRAP_UP_TO_DATE
