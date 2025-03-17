@@ -24,6 +24,9 @@ if grep -q "Microsoft" /proc/version; then
 	ln -sf "/mnt/c/user/${WINDOWS_USER}/Email"				"${HOME}/Email"
 
 	rsync -av "${SCRIPT_PATH}/windows/etc" "/etc/"
+
+else
+	echo "This is not a Windows (WSL) environment. Skipping Windows-specific configurations."
 fi
 
 ###############################################################################
