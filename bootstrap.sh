@@ -21,6 +21,7 @@ fi
 
 rsync -av "${SCRIPT_PATH}/home/"		"${HOME}/"
 rsync -av "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
-rsync -av "${SCRIPT_PATH}/etc/"		"/etc/"
+
+su -c "rsync -av \"${SCRIPT_PATH}/etc/\"		/etc/" root
 	
 unset BOOTSTRAP_UP_TO_DATE
