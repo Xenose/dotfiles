@@ -8,20 +8,40 @@ if [ -z "${BOOTSTRAP_UP_TO_DATE}" ]; then
 	exit
 fi
 
+# start of the actual script
 SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
+###############################################################################
+#   Windows
+###############################################################################
 if grep -q "Microsoft" /proc/version; then
-	ln -s "/mnt/c/user/sebastian.johansson/Desktop" "${HOME}/Desktop"
-	ln -s "/mnt/c/user/sebastian.johansson/My Documents" "${HOME}/Documents"
-	ln -s "/mnt/c/user/sebastian.johansson/Downloads" "${HOME}/Downloads"
-	ln -s "/mnt/c/user/sebastian.johansson/Projects" "${HOME}/Projects"
+	WINDOWS_USER="$(whoami.exe | awk -F '\\' '{print $NF}')"
+
+	ln -sf "/mnt/c/user/${WINDOWS_USER}/Desktop"				"${HOME}/Desktop"
+	ln -sf "/mnt/c/user/${WINDOWS_USER}/My Documents"		"${HOME}/Documents"
+	ln -sf "/mnt/c/user/${WINDOWS_USER}/Downloads"			"${HOME}/Downloads"
+	ln -sf "/mnt/c/user/${WINDOWS_USER}/Projects"			"${HOME}/Projects"
+	ln -sf "/mnt/c/user/${WINDOWS_USER}/Email"				"${HOME}/Email"
 
 	rsync -av "${SCRIPT_PATH}/windows/etc" "/etc/"
 fi
 
+###############################################################################
+#   Syncing configuration files
+###############################################################################
 rsync -av "${SCRIPT_PATH}/home/"		"${HOME}/"
 rsync -av "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
 
 su -c "rsync -av \"${SCRIPT_PATH}/etc/\"		/etc/" root
+
+###############################################################################
+#   SSH KEY CREATION
+###############################################################################
+mkdir -pv "${HOME}/.ssh"
+
+# Checks if the key exists
+if [ ! -f "${HOME}/.ssh/device_ssh_key" ]; then
+	ssh-keygen -t rsa -b 4096 -f "${HOME}/.ssh/device_ssh_key"
+fi
 	
 unset BOOTSTRAP_UP_TO_DATE
