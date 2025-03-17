@@ -1,0 +1,79 @@
+
+Xcursor.size: 16
+
+!URxvt*background: [90]#151515
+!URxvt*foreground: #c6a57b
+!URxvt*background: #151515
+!black
+!URxvt*color0: #101010
+!URxvt*color8: #303030
+!red
+!URxvt*color1: #953331
+!URxvt*color9: #8D4A48
+!green
+!URxvt*color2: #546A29
+!URxvt*color10: #7E9960
+!yellow
+!URxvt*color3: #909737
+!URxvt*color11: #9CA554
+!blue
+!URxvt*color4: #385E6B
+!URxvt*color12: #5C737C
+!magenta
+!URxvt*color5: #7F355E
+!URxvt*color13: #95618B
+!cyan
+!URxvt*color6: #34676F
+!URxvt*color14: #5D858A
+!white
+!URxvt*color7: #dddddd
+!URxvt*color15: #dddddd
+
+URxvt*font: xft:hack:size=12, xft:Fira Code Nerd Font Mono:size=11, xft:TerminessTTF Nerd Font Mono:size=20,xft:DejaVuSansMono Nerd Font:size=6,xft:Inconsolata Nerd Font Mono:size=1
+URxvt*scrollBar: false
+URxvt*termName: rxvt
+URxvt*antialias: true
+URxvt*cursorUnderline: true
+! scroll in relation to buffer (with mouse scroll or Shift+Page Up)
+URxvt*scrollWithBuffer: true
+! clickble urls
+URxvt.perl-ext-common: default,matcher
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.button: 1
+
+! special
+URxvt*foreground:   #ffffff
+URxvt*background:   #000000
+URxvt*cursorColor:  #ffffff
+
+! black
+URxvt*color0:       #000000
+URxvt*color8:       #3e3e3e
+
+! red
+URxvt*color1:       #910000
+URxvt*color9:       #9d5656
+
+! green
+URxvt*color2:       #004800
+URxvt*color10:      #27ca00
+
+! yellow
+URxvt*color3:       #ddcb00
+URxvt*color11:      #f0eb74
+
+! blue
+URxvt*color4:       #003f83
+URxvt*color12:      #0077dc
+
+! magenta
+URxvt*color5:       #50006a
+URxvt*color13:      #79009e
+
+! cyan
+URxvt*color6:       #007365
+URxvt*color14:      #00ceb2
+
+! white
+URxvt*color7:       #fdfeff
+URxvt*color15:      #c8c8c8
