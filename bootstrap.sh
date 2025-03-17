@@ -10,13 +10,13 @@ fi
 
 SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
-if grep -g "Microsoft" /proc/version; then
+if grep -q "Microsoft" /proc/version; then
 	ln -s "/mnt/c/user/sebastian.johansson/Desktop" "${HOME}/Desktop"
 	ln -s "/mnt/c/user/sebastian.johansson/My Documents" "${HOME}/Documents"
 	ln -s "/mnt/c/user/sebastian.johansson/Downloads" "${HOME}/Downloads"
 	ln -s "/mnt/c/user/sebastian.johansson/Projects" "${HOME}/Projects"
 
-	rsync -av "${SCRIPT_PATH}/windows/etc" "/etc/"
+	cp -r "${SCRIPT_PATH}/windows/etc" "/etc/"
 fi
 
 cp -r "${SCRIPT_PATH}/home/"		"${HOME}/"
