@@ -19,8 +19,8 @@ if grep -g "Microsoft" /proc/version; then
 	rsync -av "${SCRIPT_PATH}/windows/etc" "/etc/"
 fi
 
-rsync -av "${SCRIPT_PATH}/home/"		"${HOME}/"
-rsync -av "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
-rsync -av "${SCRIPT_PATH}/etc/"		"/etc/"
+cp -r "${SCRIPT_PATH}/home/"		"${HOME}/"
+cp -r "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
+cp -r "${SCRIPT_PATH}/etc/"		"/etc/"
 	
 unset BOOTSTRAP_UP_TO_DATE
