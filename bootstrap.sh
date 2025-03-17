@@ -17,11 +17,11 @@ SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 if [ -n "$WSLENV" ] || grep -q "microsoft" /proc/sys/kernel/osrelease; then
 	WINDOWS_USER="$(whoami.exe | awk -F '\\' '{print $NF}')"
 
-	ln -sf "/mnt/c/user/${WINDOWS_USER}/Desktop"				"${HOME}/Desktop"
-	ln -sf "/mnt/c/user/${WINDOWS_USER}/My Documents"		"${HOME}/Documents"
-	ln -sf "/mnt/c/user/${WINDOWS_USER}/Downloads"			"${HOME}/Downloads"
-	ln -sf "/mnt/c/user/${WINDOWS_USER}/Projects"			"${HOME}/Projects"
-	ln -sf "/mnt/c/user/${WINDOWS_USER}/Email"				"${HOME}/Email"
+	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Desktop"				"${HOME}/Desktop"
+	ln -sf "/mnt/c/Users/${WINDOWS_USER}/My Documents"		"${HOME}/Documents"
+	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Downloads"			"${HOME}/Downloads"
+	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Projects"			"${HOME}/Projects"
+	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Email"				"${HOME}/Email"
 
 	rsync -av "${SCRIPT_PATH}/windows/etc" "/etc/"
 
