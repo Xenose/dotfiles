@@ -1,2 +1,2 @@
 
-source "${HOME}/.config/shellrc"
+source "${HOME}/.config/shellrc.sh"

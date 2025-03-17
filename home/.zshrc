@@ -10,4 +10,6 @@ if [ -z "${ZSH_LOADED}" ]; then
 	prompt adam1
 
 	export SH_LOADED=true
+
+	source "${HOME}/.config/shellrc.sh"
 fi
