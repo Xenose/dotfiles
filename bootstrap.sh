@@ -15,7 +15,7 @@ SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 #   Windows
 ###############################################################################
 if [ -n "$WSLENV" ] || grep -q "microsoft" /proc/sys/kernel/osrelease; then
-	WINDOWS_USER="$(whoami.exe | awk -F '\\' '{print $NF}')"
+	WINDOWS_USER="$(whoami.exe | awk -F '\\' '{print $NF}' | tr -d '\r')"
 
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Desktop"				"${HOME}/Desktop"
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/My Documents"		"${HOME}/Documents"
