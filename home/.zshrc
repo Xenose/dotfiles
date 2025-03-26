@@ -9,7 +9,8 @@ if [ -z "${ZSH_LOADED}" ]; then
 
 	prompt adam1
 
-	export SH_LOADED=true
+	export ZSH_LOADED=true
 
-	source "${HOME}/.config/shellrc.sh"
 fi
+
+source "${HOME}/.config/shellrc.sh"
