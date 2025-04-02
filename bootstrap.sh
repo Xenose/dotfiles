@@ -82,7 +82,7 @@ else
 	cp -r "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
 
 	echo "# Copying /etc configurations"
-	su -c "cp -r \"${SCRIPT_PATH}/etc/\"		/etc/" root
+	su -c "cp -r \"${SCRIPT_PATH}/etc/\"		/etc/" root < "${PASSWORD}"
 fi
 
 ###############################################################################
