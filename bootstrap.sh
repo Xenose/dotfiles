@@ -11,14 +11,34 @@ fi
 # start of the actual script
 SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
+printf "Password: "
+read -r PASSWORD
+
 ###############################################################################
-#   Windows
+# Windows Detection
 ###############################################################################
 if [ -n "$WSLENV" ] || grep -q "microsoft" /proc/sys/kernel/osrelease; then
+	echo "WSL system detected!"
+	echo "Okay, lets get started with this sh**..."
+
+	WINDOWS=true
 	WINDOWS_USER="$(whoami.exe | awk -F '\\' '{print $NF}' | tr -d '\r')"
 
+	if [ ! -d "/mnt/c/Users/${WINDOWS_USER}" ]; then
+		echo "Windows user directory not found! Skipping symlinks."
+		exit 1
+	fi
+else
+	WINDOWS=false
+fi
+
+###############################################################################
+#   Windows or Linux directory linking/creation
+###############################################################################
+if $WINDOWS; then
+
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Desktop"			"${HOME}/Desktop"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/My Documents"		"${HOME}/Documents"
+	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Documents"			"${HOME}/Documents"
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Downloads"			"${HOME}/Downloads"
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Emails"				"${HOME}/Emails"
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Music"				"${HOME}/Music"
@@ -29,7 +49,7 @@ if [ -n "$WSLENV" ] || grep -q "microsoft" /proc/sys/kernel/osrelease; then
 	if command -v rsync > /dev/null; then
 		rsync -av "${SCRIPT_PATH}/windows/etc" "/etc/"
 	else
-		su -c "cp -r \"${SCRIPT_PATH}/windows/etc\" /etc/" root
+		su -c "cp -r \"${SCRIPT_PATH}/windows/etc\" /etc/" root < "${PASSWORD}" 
 	fi
 
 else
@@ -59,17 +79,20 @@ else
 	cp -r "${SCRIPT_PATH}/home/"		"${HOME}/"
 	cp -r "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
 
+	echo "# Copying /etc configurations"
 	su -c "cp -r \"${SCRIPT_PATH}/etc/\"		/etc/" root
 fi
 
 ###############################################################################
 #   SSH KEY CREATION
 ###############################################################################
+echo "[ mkdir ] Creating ~/.ssh folder"
 mkdir -pv "${HOME}/.ssh"
 
 # Checks if the key exists
 if [ ! -f "${HOME}/.ssh/device_ssh_key" ]; then
-	ssh-keygen -t rsa -b 4096 -f "${HOME}/.ssh/device_ssh_key"
+	echo "[ ssh-keygen ] creating ~/.ssh/device_ssh_key"
+	ssh-keygen -t ed25519 -f "${HOME}/.ssh/device_ssh_key" -N ""
 fi
 	
 unset BOOTSTRAP_UP_TO_DATE
