@@ -15,6 +15,7 @@ printf "Password: "
 stty -echo
 read -r PASSWORD
 stty echo
+echo ""
 
 ###############################################################################
 # Windows Detection
@@ -76,7 +77,7 @@ if command -v rsync > /dev/null; then
 	rsync -av "${SCRIPT_PATH}/home/"		"${HOME}/"
 	rsync -av "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
 
-	su -c "rsync -av \"${SCRIPT_PATH}/etc/\"		/etc/" root
+	echo "${PASSWORD}" | su -c "rsync -av \"${SCRIPT_PATH}/etc/\"		/etc/" root
 else
 	cp -r "${SCRIPT_PATH}/home/"		"${HOME}/"
 	cp -r "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
