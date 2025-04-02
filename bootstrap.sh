@@ -51,7 +51,7 @@ if $WINDOWS; then
 	if command -v rsync > /dev/null; then
 		rsync -av "${SCRIPT_PATH}/windows/etc" "/etc/"
 	else
-		su -c "cp -r \"${SCRIPT_PATH}/windows/etc\" /etc/" root < "${PASSWORD}" 
+		echo "${PASSWORD}" | su -c "cp -r \"${SCRIPT_PATH}/windows/etc\" /etc/" root
 	fi
 
 else
@@ -82,7 +82,7 @@ else
 	cp -r "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
 
 	echo "# Copying /etc configurations"
-	su -c "cp -r \"${SCRIPT_PATH}/etc/\"		/etc/" root < "${PASSWORD}"
+	echo "${PASSWORD}" | su -c "cp -r \"${SCRIPT_PATH}/etc/\"		/etc/" root
 fi
 
 ###############################################################################
