@@ -12,7 +12,9 @@ fi
 SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 printf "Password: "
+stty -echo
 read -r PASSWORD
+stty echo
 
 ###############################################################################
 # Windows Detection
