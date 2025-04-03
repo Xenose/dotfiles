@@ -24,7 +24,7 @@ fi
 
 super() {
 	if command -v sudo > /dev/null; then
-		sudo "$1"
+		sudo $1
 	else
 		if [ ! -e "${PASSWORD_FILE}" ]; then
 			# Password handling should never fail
