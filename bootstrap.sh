@@ -9,6 +9,11 @@ if [ -z "${BOOTSTRAP_UP_TO_DATE}" ]; then
 	exit
 fi
 
+if EUID -eq 0; then
+	echo "This script must not be run as root."
+	exit 1
+fi
+
 # start of the actual script
 DISTRO=$(grep -E '^NAME=' /etc/os-release | cut -d= -f2 | tr -d '"')
 SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
@@ -16,10 +21,10 @@ SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 ###############################################################################
 # Command setup section
 ###############################################################################
+CMD_COPY="cp -r"
+
 if command -v rsync > /dev/null; then
 	CMD_COPY="rsync -av"
-else
-	CMD_COPY="cp -r"
 fi
 
 super() {
@@ -126,8 +131,12 @@ mkdir -pv "${HOME}/.ssh"
 
 # Checks if the key exists
 if [ ! -f "${HOME}/.ssh/device_ssh_key" ]; then
-	echo "[ ssh-keygen ] creating ~/.ssh/device_ssh_key"
-	ssh-keygen -t ed25519 -f "${HOME}/.ssh/device_ssh_key" -N ""
+	if command -v ssh-keygen > /dev/null; then
+		echo "[ ssh-keygen ] creating ~/.ssh/device_ssh_key"
+		ssh-keygen -t ed25519 -f "${HOME}/.ssh/device_ssh_key" -N ""
+	else
+		echo "command ssh-keygen is missing!"
+	fi
 fi
 
 ###############################################################################
