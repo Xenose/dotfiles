@@ -18,13 +18,15 @@ fi
 DISTRO=$(grep -E '^NAME=' /etc/os-release | cut -d= -f2 | tr -d '"')
 SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
+[ -z "$DISTRO" ] && DISTRO="Unknown"
+
 ###############################################################################
 # Command setup section
 ###############################################################################
-CMD_COPY="cp -r"
+CMD_COPY="cp -r --no-preserve=mode,ownership"
 
 if command -v rsync > /dev/null; then
-	CMD_COPY="rsync -av"
+	CMD_COPY="rsync -rltD"
 fi
 
 super() {
@@ -81,15 +83,25 @@ fi
 #   Windows or Linux directory linking/creation
 ###############################################################################
 if $WINDOWS; then
+	rmdir	"${HOME}/Desktop"
+	rmdir "${HOME}/Documents"
+	rmdir "${HOME}/Downloads"
+	rmdir "${HOME}/Emails"
+	rmdir "${HOME}/Music"
+	rmdir "${HOME}/Projects"
+	rmdir "${HOME}/Pictures"
+	rmdir "${HOME}/Videos"
+	rmdir "${HOME}/.appdata"
 
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Desktop"			"${HOME}/Desktop"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Documents"			"${HOME}/Documents"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Downloads"			"${HOME}/Downloads"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Emails"				"${HOME}/Emails"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Music"				"${HOME}/Music"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Projects"			"${HOME}/Projects"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Pictures"			"${HOME}/Pictures"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Videos"				"${HOME}/Videos"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Desktop"				"${HOME}/Desktop"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Documents"			"${HOME}/Documents"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Downloads"			"${HOME}/Downloads"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Emails"				"${HOME}/Emails"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Music"				"${HOME}/Music"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Projects"			"${HOME}/Projects"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Pictures"			"${HOME}/Pictures"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Videos"				"${HOME}/Videos"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/AppData"				"${HOME}/.appdata"
 
 	# shellcheck disable=SC2086
 	super ${CMD_COPY} "${SCRIPT_PATH}/platform/windows/etc" "/etc/"
