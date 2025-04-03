@@ -68,6 +68,7 @@ rm_move() {
 		if [ ! -L "${HOME}/${1}" ]; then
 			mv -ir "${HOME}/${1}/*" "/mnt/c/Users/${WINDOWS_USER}/${2}/"
 			rmdir	"${HOME}/${1}"
+			mkdir -pv "/mnt/c/Users/${WINDOWS_USER}/${2}/"
 		fi
 	fi
 }
