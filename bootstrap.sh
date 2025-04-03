@@ -67,7 +67,7 @@ rm_move() {
 	if rmdir	"${HOME}/${1}" > /dev/null; then
 		if [ ! -L "${HOME}/${1}" ]; then
 			mkdir -pv "/mnt/c/Users/${WINDOWS_USER}/${2}/"
-			mv -ir "${HOME}/${1}/*" "/mnt/c/Users/${WINDOWS_USER}/${2}/"
+			mv -vir "${HOME}/${1}/*" "/mnt/c/Users/${WINDOWS_USER}/${2}/"
 			rmdir	"${HOME}/${1}"
 		fi
 	fi
