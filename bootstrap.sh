@@ -29,6 +29,8 @@ if command -v rsync > /dev/null; then
 	CMD_COPY="rsync -rltD"
 fi
 
+echo "CMD_COPY is: $CMD_COPY"
+
 super() {
 	if command -v sudo > /dev/null; then
 		# shellcheck disable=SC2068
