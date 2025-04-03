@@ -1,5 +1,15 @@
 #!/bin/sh
 
+###############################################################################
+#
+# Author		: Sebastian Johansson
+# Year		: 2025
+# License	: GPLv3
+#
+# Description:
+#
+###############################################################################
+
 
 # syncing with a up to date version
 if [ -z "${BOOTSTRAP_UP_TO_DATE}" ]; then
