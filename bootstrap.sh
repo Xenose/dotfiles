@@ -24,7 +24,7 @@ fi
 
 super() {
 	if command -v sudo > /dev/null; then
-		sudo $1
+		sudo $@
 	else
 		if [ ! -e "${PASSWORD_FILE}" ]; then
 			# Password handling should never fail
@@ -49,7 +49,7 @@ super() {
 			set +e
 		fi
 
-		su -c "$1" root < "${PASSWORD_FILE}"
+		su -c "$@" root < "${PASSWORD_FILE}"
 	fi
 }
 ###############################################################################
@@ -84,7 +84,7 @@ if $WINDOWS; then
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Pictures"			"${HOME}/Pictures"
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Videos"				"${HOME}/Videos"
 
-	super "${CMD_COPY} \"${SCRIPT_PATH}/platform/windows/etc\" /etc/"
+	super CMD_COPY "${SCRIPT_PATH}/platform/windows/etc" "/etc/"
 else
 	echo "This is not a Windows (WSL) environment. Skipping Windows-specific configurations."
 
@@ -105,11 +105,11 @@ fi
 ${CMD_COPY} "${SCRIPT_PATH}/home/"		"${HOME}/"
 ${CMD_COPY} "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
 
-super "${CMD_COPY} \"${SCRIPT_PATH}/etc/\"		/etc/"
+super CMD_COPY "${SCRIPT_PATH}/etc/" "/etc/"
 
 case "$DISTRO" in
 	"Arch Linux")
-		super "${CMD_COPY} \"${SCRIPT_PATH}/platform/arch/etc/\"		/etc/"
+		super CMD_COPY "${SCRIPT_PATH}/platform/arch/etc/" "/etc/"
 		;;
 esac
 
@@ -128,6 +128,6 @@ fi
 ###############################################################################
 #   Storing distribution name in /etc/environment
 ###############################################################################
-super "echo 'DISTRO=${DISTRO}' | tee -a /etc/environment > /dev/null"
+super echo "DISTRO=${DISTRO}" | tee -a /etc/environment > /dev/null
 
 unset BOOTSTRAP_UP_TO_DATE
