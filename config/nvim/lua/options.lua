@@ -18,6 +18,8 @@ vim.opt.updatetime = 20
 vim.opt.list = true
 vim.opt.listchars = { tab = ' > ', space = '·' }
 vim.opt.expandtab = false
+vim.api.nvim_set_hl(0, "Comment", { fg = "#FF66CC" })
+vim.api.nvim_set_hl(0, "LineNr", { fg = "#5dc5f8" })
 
 -- Make header files for C to C files for vim
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
