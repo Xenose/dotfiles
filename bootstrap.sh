@@ -17,13 +17,14 @@ SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 # Command setup section
 ###############################################################################
 if command -v rsync > /dev/null; then
-	alias CMD_COPY="rsync -av"
+	CMD_COPY="rsync -av"
 else
-	alias CMD_COPY="cp -r"
+	CMD_COPY="cp -r"
 fi
 
 super() {
 	if command -v sudo > /dev/null; then
+		# shellcheck disable=SC2068
 		sudo $@
 	else
 		if [ ! -e "${PASSWORD_FILE}" ]; then
@@ -60,6 +61,7 @@ if [ -n "$WSLENV" ] || grep -q "microsoft" /proc/sys/kernel/osrelease; then
 	echo "Okay, lets get started with this sh**..."
 
 	WINDOWS=true
+	# shellcheck disable=SC1003
 	WINDOWS_USER="$(whoami.exe | awk -F '\\' '{print $NF}' | tr -d '\r')"
 
 	if [ ! -d "/mnt/c/Users/${WINDOWS_USER}" ]; then
@@ -84,7 +86,8 @@ if $WINDOWS; then
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Pictures"			"${HOME}/Pictures"
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Videos"				"${HOME}/Videos"
 
-	super CMD_COPY "${SCRIPT_PATH}/platform/windows/etc" "/etc/"
+	# shellcheck disable=SC2086
+	super ${CMD_COPY} "${SCRIPT_PATH}/platform/windows/etc" "/etc/"
 else
 	echo "This is not a Windows (WSL) environment. Skipping Windows-specific configurations."
 
@@ -102,14 +105,16 @@ fi
 ###############################################################################
 #   Syncing configuration files
 ###############################################################################
-CMD_COPY "${SCRIPT_PATH}/home/"		"${HOME}/"
-CMD_COPY "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
+${CMD_COPY} "${SCRIPT_PATH}/home/"		"${HOME}/"
+${CMD_COPY} "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
 
-super CMD_COPY "${SCRIPT_PATH}/etc/" "/etc/"
+# shellcheck disable=SC2086
+super ${CMD_COPY} "${SCRIPT_PATH}/etc/" "/etc/"
 
 case "$DISTRO" in
 	"Arch Linux")
-		super CMD_COPY "${SCRIPT_PATH}/platform/arch/etc/" "/etc/"
+		# shellcheck disable=SC2086
+		super ${CMD_COPY} "${SCRIPT_PATH}/platform/arch/etc/" "/etc/"
 		;;
 esac
 
