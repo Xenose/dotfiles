@@ -1,5 +1,6 @@
 #!/bin/sh
 
+
 # syncing with a up to date version
 if [ -z "${BOOTSTRAP_UP_TO_DATE}" ]; then
 	git pull
@@ -11,11 +12,24 @@ fi
 # start of the actual script
 SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
+set -e
+
+# creating a temporary password file
+PASSWORD_FILE=$(mktemp)
+trap 'rm -f "$PASSWORD_FILE"' EXIT
+chmod 600 "$PASSWORD_FILE"
+
 printf "Password: "
 stty -echo
 read -r PASSWORD
 stty echo
 echo ""
+
+# storing the password
+echo "$PASSWORD" > "$PASSWORD_FILE"
+unset PASSWORD
+
+set +e
 
 ###############################################################################
 # Windows Detection
@@ -52,7 +66,7 @@ if $WINDOWS; then
 	if command -v rsync > /dev/null; then
 		rsync -av "${SCRIPT_PATH}/windows/etc" "/etc/"
 	else
-		echo "${PASSWORD}" | su -c "cp -r \"${SCRIPT_PATH}/windows/etc\" /etc/" root
+		cat "${PASSWORD_FILE}" | su -c "cp -r \"${SCRIPT_PATH}/windows/etc\" /etc/" root
 	fi
 
 else
@@ -77,13 +91,13 @@ if command -v rsync > /dev/null; then
 	rsync -av "${SCRIPT_PATH}/home/"		"${HOME}/"
 	rsync -av "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
 
-	echo "${PASSWORD}" | su -c "rsync -av \"${SCRIPT_PATH}/etc/\"		/etc/" root
+	cat "${PASSWORD_FILE}" | su -c "rsync -av \"${SCRIPT_PATH}/etc/\"		/etc/" root
 else
 	cp -r "${SCRIPT_PATH}/home/"		"${HOME}/"
 	cp -r "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
 
 	echo "# Copying /etc configurations"
-	echo "${PASSWORD}" | su -c "cp -r \"${SCRIPT_PATH}/etc/\"		/etc/" root
+	cat "${PASSWORD_FILE}" | su -c "cp -r \"${SCRIPT_PATH}/etc/\"		/etc/" root
 fi
 
 ###############################################################################
