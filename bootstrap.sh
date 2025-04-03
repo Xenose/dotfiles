@@ -9,7 +9,7 @@ if [ -z "${BOOTSTRAP_UP_TO_DATE}" ]; then
 	exit
 fi
 
-if EUID -eq 0; then
+if $(id -u) -eq 0; then
 	echo "This script must not be run as root."
 	exit 1
 fi
