@@ -84,7 +84,7 @@ if $WINDOWS; then
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Pictures"			"${HOME}/Pictures"
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Videos"				"${HOME}/Videos"
 
-	super -c "${CMD_COPY} \"${SCRIPT_PATH}/platform/windows/etc\" /etc/" root < "${PASSWORD_FILE}"
+	super "${CMD_COPY} \"${SCRIPT_PATH}/platform/windows/etc\" /etc/"
 else
 	echo "This is not a Windows (WSL) environment. Skipping Windows-specific configurations."
 
@@ -105,11 +105,11 @@ fi
 ${CMD_COPY} "${SCRIPT_PATH}/home/"		"${HOME}/"
 ${CMD_COPY} "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
 
-super -c "${CMD_COPY} \"${SCRIPT_PATH}/etc/\"		/etc/" root < "${PASSWORD_FILE}"
+super "${CMD_COPY} \"${SCRIPT_PATH}/etc/\"		/etc/"
 
 case "$DISTRO" in
 	"Arch Linux")
-		super -c "${CMD_COPY} \"${SCRIPT_PATH}/platform/arch/etc/\"		/etc/" root	< "${PASSWORD_FILE}"
+		super "${CMD_COPY} \"${SCRIPT_PATH}/platform/arch/etc/\"		/etc/"
 		;;
 esac
 
@@ -128,6 +128,6 @@ fi
 ###############################################################################
 #   Storing distribution name in /etc/environment
 ###############################################################################
-super -c "echo 'DISTRO=${DISTRO}' | tee -a /etc/environment > /dev/null" < "${PASSWORD_FILE}"
+super "echo 'DISTRO=${DISTRO}' | tee -a /etc/environment > /dev/null"
 
 unset BOOTSTRAP_UP_TO_DATE
