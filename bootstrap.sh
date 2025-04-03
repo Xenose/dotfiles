@@ -62,6 +62,15 @@ super() {
 		su -c "$@" root < "${PASSWORD_FILE}"
 	fi
 }
+
+rm_move() {
+	if rmdir	"${HOME}/${1}" > /dev/null; then
+		if [ ! -L "${HOME}/${1}" ]; then
+			mv -ir "${HOME}/${1}/*" "/mnt/c/Users/${WINDOWS_USER}/${2}/"
+			rmdir	"${HOME}/${1}"
+		fi
+	fi
+}
 ###############################################################################
 # Windows Detection
 ###############################################################################
@@ -85,15 +94,14 @@ fi
 #   Windows or Linux directory linking/creation
 ###############################################################################
 if $WINDOWS; then
-	rmdir	"${HOME}/Desktop"
-	rmdir "${HOME}/Documents"
-	rmdir "${HOME}/Downloads"
-	rmdir "${HOME}/Emails"
-	rmdir "${HOME}/Music"
-	rmdir "${HOME}/Projects"
-	rmdir "${HOME}/Pictures"
-	rmdir "${HOME}/Videos"
-	rmdir "${HOME}/.appdata"
+	rm_move "Desktop"		"Desktop"
+	rm_move "Documents"	"Documents"
+	rm_move "Downloads"	"Downloads"
+	rm_move "Emails"		"Emails"
+	rm_move "Music"		"Music"
+	rm_move "Projects"	"Projects"
+	rm_move "Pictures"	"Pictures"
+	rm_move "Videos"		"Vidoes"
 
 	ln -s "/mnt/c/Users/${WINDOWS_USER}/Desktop"				"${HOME}/Desktop"
 	ln -s "/mnt/c/Users/${WINDOWS_USER}/Documents"			"${HOME}/Documents"
