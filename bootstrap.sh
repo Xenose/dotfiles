@@ -17,9 +17,9 @@ SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 # Command setup section
 ###############################################################################
 if command -v rsync > /dev/null; then
-	CMD_COPY="rsync -av"
+	alias CMD_COPY="rsync -av"
 else
-	CMD_COPY="cp -r"
+	alias CMD_COPY="cp -r"
 fi
 
 super() {
@@ -84,7 +84,7 @@ if $WINDOWS; then
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Pictures"			"${HOME}/Pictures"
 	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Videos"				"${HOME}/Videos"
 
-	super ${CMD_COPY} "${SCRIPT_PATH}/platform/windows/etc" "/etc/"
+	super CMD_COPY "${SCRIPT_PATH}/platform/windows/etc" "/etc/"
 else
 	echo "This is not a Windows (WSL) environment. Skipping Windows-specific configurations."
 
@@ -102,14 +102,14 @@ fi
 ###############################################################################
 #   Syncing configuration files
 ###############################################################################
-${CMD_COPY} "${SCRIPT_PATH}/home/"		"${HOME}/"
-${CMD_COPY} "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
+CMD_COPY "${SCRIPT_PATH}/home/"		"${HOME}/"
+CMD_COPY "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
 
-super ${CMD_COPY} "${SCRIPT_PATH}/etc/" "/etc/"
+super CMD_COPY "${SCRIPT_PATH}/etc/" "/etc/"
 
 case "$DISTRO" in
 	"Arch Linux")
-		super ${CMD_COPY} "${SCRIPT_PATH}/platform/arch/etc/" "/etc/"
+		super CMD_COPY "${SCRIPT_PATH}/platform/arch/etc/" "/etc/"
 		;;
 esac
 
