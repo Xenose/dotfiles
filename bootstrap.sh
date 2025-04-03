@@ -23,7 +23,7 @@ SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 ###############################################################################
 # Command setup section
 ###############################################################################
-CMD_COPY="cp -r --no-preserve=mode,ownership"
+CMD_COPY="cp -vr --no-preserve=mode,ownership"
 
 if command -v rsync > /dev/null; then
 	CMD_COPY="rsync -rltD"
