@@ -64,11 +64,10 @@ super() {
 }
 
 rm_move() {
-	if rmdir	"${HOME}/${1}" > /dev/null; then
+	if ! rmdir	"${HOME}/${1}" > /dev/null; then
 		if [ ! -L "${HOME}/${1}" ]; then
 			mkdir -pv "/mnt/c/Users/${WINDOWS_USER}/${2}/"
 			mv -vir "${HOME}/${1}/*" "/mnt/c/Users/${WINDOWS_USER}/${2}/"
-			echo "The status of the move is ${?}"
 			rmdir	"${HOME}/${1}"
 		fi
 	fi
