@@ -5,6 +5,8 @@ if [ -z "$PROFILE_SOURCED" ]; then
 fi
 
 bindkey -v
+bindkey "^H" backward-delete-char
+bindkey "^?" backward-delete-char
 
 # loading custom scripts
 . "${HOME}/.scripts/tools/*.sh"
