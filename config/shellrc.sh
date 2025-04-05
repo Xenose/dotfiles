@@ -13,7 +13,11 @@ bindkey "^?" backward-delete-char
 
 ### ALIASES ###
 # navigation
-alias ls='ls --group-directories-first --color'
+case "$(uname)" in
+	Darwin)	alias ls='ls -G' ;;
+	Linux)	alias ls='ls --group-directories-first --color' ;;
+esac
+
 alias ll='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
@@ -44,12 +48,24 @@ update() {
 		su -c "pacman -Syu"
 	fi
 
+	if command -v apt > /dev/null; then
+		su -c apt update && sudo apt upgrade -y
+	fi
+
+	if command -v dnf > /dev/null; then
+		su -c dnf upgrade -y
+	fi
+
 	if command -v nix-env > /dev/null; then
 		nix profile upgrade
 	fi
 
 	if command -v flatpak > /dev/null; then
 		flatpak update
+	fi
+	
+	if command -v brew > /dev/null; then
+		brew update && brew upgrade
 	fi
 }
 

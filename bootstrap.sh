@@ -1,5 +1,15 @@
 #!/bin/sh
 
+###############################################################################
+#
+# Author		: Sebastian Johansson
+# Year		: 2025
+# License	: GPLv3
+#
+# Description:
+#
+###############################################################################
+
 
 # syncing with a up to date version
 if [ -z "${BOOTSTRAP_UP_TO_DATE}" ]; then
@@ -18,14 +28,18 @@ fi
 DISTRO=$(grep -E '^NAME=' /etc/os-release | cut -d= -f2 | tr -d '"')
 SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
+[ -z "$DISTRO" ] && DISTRO="Unknown"
+
 ###############################################################################
 # Command setup section
 ###############################################################################
-CMD_COPY="cp -r"
+CMD_COPY="cp -vr --no-preserve=mode,ownership"
 
 if command -v rsync > /dev/null; then
-	CMD_COPY="rsync -av"
+	CMD_COPY="rsync -rltD"
 fi
+
+echo "CMD_COPY is: $CMD_COPY"
 
 super() {
 	if command -v sudo > /dev/null; then
@@ -58,6 +72,16 @@ super() {
 		su -c "$@" root < "${PASSWORD_FILE}"
 	fi
 }
+
+rm_move() {
+	if ! rmdir	"${HOME}/${1}" > /dev/null; then
+		if [ ! -L "${HOME}/${1}" ]; then
+			mkdir -pv "/mnt/c/Users/${WINDOWS_USER}/${2}/"
+			mv -i "${HOME}/${1}"/* "/mnt/c/Users/${WINDOWS_USER}/${2}/"
+			rmdir	"${HOME}/${1}"
+		fi
+	fi
+}
 ###############################################################################
 # Windows Detection
 ###############################################################################
@@ -81,15 +105,24 @@ fi
 #   Windows or Linux directory linking/creation
 ###############################################################################
 if $WINDOWS; then
+	rm_move "Desktop"		"Desktop"
+	rm_move "Documents"	"Documents"
+	rm_move "Downloads"	"Downloads"
+	rm_move "Emails"		"Emails"
+	rm_move "Music"		"Music"
+	rm_move "Projects"	"Projects"
+	rm_move "Pictures"	"Pictures"
+	rm_move "Videos"		"Vidoes"
 
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Desktop"			"${HOME}/Desktop"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Documents"			"${HOME}/Documents"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Downloads"			"${HOME}/Downloads"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Emails"				"${HOME}/Emails"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Music"				"${HOME}/Music"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Projects"			"${HOME}/Projects"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Pictures"			"${HOME}/Pictures"
-	ln -sf "/mnt/c/Users/${WINDOWS_USER}/Videos"				"${HOME}/Videos"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Desktop"				"${HOME}/Desktop"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Documents"			"${HOME}/Documents"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Downloads"			"${HOME}/Downloads"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Emails"				"${HOME}/Emails"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Music"				"${HOME}/Music"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Projects"			"${HOME}/Projects"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Pictures"			"${HOME}/Pictures"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/Videos"				"${HOME}/Videos"
+	ln -s "/mnt/c/Users/${WINDOWS_USER}/AppData"				"${HOME}/.appdata"
 
 	# shellcheck disable=SC2086
 	super ${CMD_COPY} "${SCRIPT_PATH}/platform/windows/etc" "/etc/"

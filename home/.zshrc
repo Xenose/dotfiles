@@ -5,7 +5,6 @@ autoload -Uz compinit && compinit
 
 # Load promptinit
 autoload -Uz promptinit && promptinit
-
 prompt adam1
 
 source "${HOME}/.config/shellrc.sh"
