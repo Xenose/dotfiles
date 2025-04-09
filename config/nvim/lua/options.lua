@@ -53,3 +53,12 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt_local.shiftwidth = 4      -- Set shift width to 2 spaces
 	end,
 })
+
+vim.diagnostic.config({
+  virtual_text = {
+    severity = {
+			min = vim.diagnostic.severity.INFO,
+			max = vim.diagnostic.severity.ERROR
+		}
+  }
+})
