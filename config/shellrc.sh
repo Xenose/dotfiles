@@ -9,7 +9,8 @@ bindkey "^H" backward-delete-char
 bindkey "^?" backward-delete-char
 
 # loading custom scripts
-. "${HOME}/.scripts/tools/*.sh"
+. "${HOME}/.scripts/tools/copy.sh"
+. "${HOME}/.scripts/tools/update.sh"
 
 ### ALIASES ###
 # navigation
@@ -24,7 +25,7 @@ alias lla='ls -la'
 
 alias ..='cd ..'
 alias ...='cd ../..'
-alias ....='cd../../..'
+alias ....='cd ../../..'
 alias cls='clear'
 alias hyprland='Hyprland'
 

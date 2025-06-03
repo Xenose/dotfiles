@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -e
-
 INPUT="$1"
 INTEL_PATH="/sys/class/backlight/intel_backlight"
 PATH_BRIGHTNESS="${INTEL_PATH}/brightness"

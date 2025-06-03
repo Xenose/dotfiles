@@ -36,7 +36,7 @@ SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 CMD_COPY="cp -vr --no-preserve=mode,ownership"
 
 if command -v rsync > /dev/null; then
-	CMD_COPY="rsync -rltD"
+	CMD_COPY="rsync -ruilt"
 fi
 
 echo "CMD_COPY is: $CMD_COPY"
@@ -112,7 +112,7 @@ if $WINDOWS; then
 	rm_move "Music"		"Music"
 	rm_move "Projects"	"Projects"
 	rm_move "Pictures"	"Pictures"
-	rm_move "Videos"		"Vidoes"
+	rm_move "Videos"		"Videos"
 
 	ln -s "/mnt/c/Users/${WINDOWS_USER}/Desktop"				"${HOME}/Desktop"
 	ln -s "/mnt/c/Users/${WINDOWS_USER}/Documents"			"${HOME}/Documents"
@@ -145,6 +145,7 @@ fi
 ###############################################################################
 ${CMD_COPY} "${SCRIPT_PATH}/home/"		"${HOME}/"
 ${CMD_COPY} "${SCRIPT_PATH}/config/"	"${HOME}/.config/"
+${CMD_COPY} "${SCRIPT_PATH}/scripts/"	"${HOME}/.scripts/"
 
 # shellcheck disable=SC2086
 super ${CMD_COPY} "${SCRIPT_PATH}/etc/" "/etc/"
@@ -175,6 +176,6 @@ fi
 ###############################################################################
 #   Storing distribution name in /etc/environment
 ###############################################################################
-super echo "DISTRO=${DISTRO}" | tee -a /etc/environment > /dev/null
+echo "DISTRO=${DISTRO}" | super tee -a /etc/environment > /dev/null
 
 unset BOOTSTRAP_UP_TO_DATE
