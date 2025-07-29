@@ -126,6 +126,8 @@ if $WINDOWS; then
 
 	# shellcheck disable=SC2086
 	super ${CMD_COPY} "${SCRIPT_PATH}/platform/windows/etc" "/etc/"
+
+	echo 'LS_COLORS="$LS_COLORS:ow="; export LS_COLORS' >> "${HOME}/.config/shellrc.sh"
 else
 	echo "This is not a Windows (WSL) environment. Skipping Windows-specific configurations."
 
