@@ -42,7 +42,7 @@ vim.keymap.set("n", "<leader>cc", vim.cmd.SnipClose, {silent = true})
 -- llvm models
 -- ollama
 ]]--
-vim.keymap.set({ 'n', 'v' }, '<leader>aa', ':Gen Ask<CR>')
+-- vim.keymap.set({ 'n', 'v' }, '<leader>aa', ':Gen Ask<CR>')
 
 -- Telescope shortcuts
 vim.keymap.set('n', '<leader>ps', builtin.live_grep, {})

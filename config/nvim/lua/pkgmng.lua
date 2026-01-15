@@ -1,12 +1,10 @@
 
-local platform = string.lower(vim.loop.os_uname().sysname)
+local uname_o = vim.fn.system("uname -o"):lower()
 
-if "linux" == platform then
-	if "android\n" == string.lower(vim.fn.system("uname -o")) then
-		PLATFORM = "android"
-	else
-		PLATFORM = "linux"
-	end
+if uname_o:match("android") or vim.env.TERMUX_VERSION then
+	PLATFORM = "android"
+else
+	PLATFORM = "linux"
 end
 
 -- Bootstrap lazy.nvim
