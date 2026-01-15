@@ -180,7 +180,12 @@ require("lazy").setup({
 			require("plugins.gitsigns")
 		end
 	},
-	{ "michaelb/sniprun", build = "sh install.sh" },
+
+	{
+		"michaelb/sniprun",
+		enabled = "android" ~= PLATFORM,
+		build = "sh install.sh" 
+	},
 
 	{
 		"mistricky/codesnap.nvim",
@@ -203,13 +208,13 @@ require("lazy").setup({
 
 	{
 		"nvim-treesitter/playground",
+		enabled = PLATFORM ~= "android",
 
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter"
 		},
 	},
 
-	{ "stevearc/oil.nvim" },
 	{ "mbbill/undotree" },
 	{ "David-Kunz/gen.nvim" },
 })
