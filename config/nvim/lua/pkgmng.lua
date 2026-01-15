@@ -186,6 +186,7 @@ require("lazy").setup({
 
 	{
 		"mistricky/codesnap.nvim",
+		enabled = "android" ~= PLATFORM,
 		config = function()
 			require("plugins.codesnap")
 		end,
