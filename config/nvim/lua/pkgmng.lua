@@ -1,4 +1,14 @@
 
+local platform = string.lower(vim.loop.os_uname().sysname)
+
+if "linux" == platform then
+	if "android\n" == string.lower(vim.fn.system("uname -o")) then
+		PLATFORM = "android"
+	else
+		PLATFORM = "linux"
+	end
+end
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -32,6 +42,11 @@ require("lazy").setup({
 		"folke/noice.nvim",
 		event = "VeryLazy",
 
+		config = function()
+			require("plugins.noice")
+			require("plugins.notify")
+		end,
+
 		dependencies = {
 			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
 			"MunifTanjim/nui.nvim",
@@ -55,7 +70,11 @@ require("lazy").setup({
 
 		dependencies = {
 			'nvim-tree/nvim-web-devicons'
-		}
+		},
+
+		config = function()
+			require("plugins.lualine")
+		end
 	},
 
 	{ -- oil
@@ -63,11 +82,19 @@ require("lazy").setup({
 
 		dependencies = {
 			"echasnovski/mini.icons"
-		}
+		},
+
+		config = function()
+			require("plugins.oil")
+		end
 	},
 
-	{
+	{ -- LSP
 		"VonHeikemen/lsp-zero.nvim", branch = "v4.x",
+
+		config = function()
+			require("plugins.lsp")
+		end,
 
 		dependencies = {
 			-- LSP Support
@@ -148,13 +175,42 @@ require("lazy").setup({
 	},]]--
 
 	{ "mfussenegger/nvim-dap" },
-	{ "lewis6991/gitsigns.nvim" },
+	{ -- gitsigns
+		"lewis6991/gitsigns.nvim",
+
+		config = function()
+			require("plugins.gitsigns")
+		end
+	},
 	{ "michaelb/sniprun", build = "sh install.sh" },
-	{ "mistricky/codesnap.nvim", build = 'make' },
-	{ "nvim-treesitter/nvim-treesitter", build = ':TSUpdate'},
+
+	{
+		"mistricky/codesnap.nvim",
+		config = function()
+			require("plugins.codesnap")
+		end,
+		build = 'make'
+	},
+
+	{
+		"nvim-treesitter/nvim-treesitter",
+		enabled = "android" ~= PLATFORM,
+
+		config = function()
+			require("plugins.treesitter")
+		end,
+		build = ':TSUpdate'
+	},
+
+	{
+		"nvim-treesitter/playground",
+
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter"
+		},
+	},
 
 	{ "stevearc/oil.nvim" },
-	{ "nvim-treesitter/playground"},
 	{ "mbbill/undotree" },
 	{ "David-Kunz/gen.nvim" },
 })

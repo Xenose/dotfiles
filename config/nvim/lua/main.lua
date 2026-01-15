@@ -19,15 +19,7 @@ require("options")
 require("shortcuts")
 
 -- Plugin configurations
-require("plugins.lsp")
-require("plugins.treesitter")
-require("plugins.lualine")
-require("plugins.oil")
-require("plugins.noice")
-require("plugins.codesnap")
-require("plugins.notify")
-require("plugins.gitsigns")
 --require("plugins.nvim-cmp")
 
 -- Nice to have plugin, but not needed.
-require("plugins.gen")
+-- require("plugins.gen")
