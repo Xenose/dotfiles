@@ -190,10 +190,15 @@ require("lazy").setup({
 	{
 		"mistricky/codesnap.nvim",
 		enabled = "android" ~= PLATFORM,
+		build = 'make',
+
 		config = function()
+			if PLATFORM == "android" then
+				return
+			end
+
 			require("plugins.codesnap")
-		end,
-		build = 'make'
+		end
 	},
 
 	{
@@ -201,6 +206,10 @@ require("lazy").setup({
 		enabled = "android" ~= PLATFORM,
 
 		config = function()
+			if PLATFORM == "android" then
+				return
+			end
+
 			require("plugins.treesitter")
 		end,
 		build = ':TSUpdate'
@@ -208,7 +217,7 @@ require("lazy").setup({
 
 	{
 		"nvim-treesitter/playground",
-		enabled = PLATFORM ~= "android",
+		enabled = "android" ~= PLATFORM,
 
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter"
