@@ -183,13 +183,13 @@ require("lazy").setup({
 
 	{
 		"michaelb/sniprun",
-		enabled = ~is_android,
+		enabled = not is_android,
 		build = "sh install.sh" 
 	},
 
 	{
 		"mistricky/codesnap.nvim",
-		enabled = ~is_android,
+		enabled = not is_android,
 		build = 'make',
 
 		config = function()
@@ -203,7 +203,7 @@ require("lazy").setup({
 
 	{
 		"nvim-treesitter/nvim-treesitter",
-		enabled = ~is_android,
+		enabled = not is_android,
 
 		config = function()
 			if is_android then
@@ -217,7 +217,7 @@ require("lazy").setup({
 
 	{
 		"nvim-treesitter/playground",
-		enabled = ~is_android,
+		enabled = not is_android,
 
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter"
