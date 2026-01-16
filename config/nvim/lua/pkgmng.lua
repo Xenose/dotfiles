@@ -1,13 +1,10 @@
 
-local uname_o = vim.fn.system("uname -o"):lower()
 
-if uname_o:match("android") or vim.env.TERMUX_VERSION then
-	PLATFORM = "android"
-else
-	PLATFORM = "linux"
-end
 
-print("Neovim platform:", PLATFORM)
+local platform = vim.fn.system("uname -o"):lower()
+local is_android = (vim.env.TERMUX_VERSION ~= nil) or (vim.fn.system("uname -o"):lower():match("android") ~= nil)
+
+print("Neovim platform:", platform)
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -186,17 +183,17 @@ require("lazy").setup({
 
 	{
 		"michaelb/sniprun",
-		enabled = "android" ~= PLATFORM,
+		enabled = ~is_android,
 		build = "sh install.sh" 
 	},
 
 	{
 		"mistricky/codesnap.nvim",
-		enabled = "android" ~= PLATFORM,
+		enabled = ~is_android,
 		build = 'make',
 
 		config = function()
-			if PLATFORM == "android" then
+			if is_android then
 				return
 			end
 
@@ -206,10 +203,10 @@ require("lazy").setup({
 
 	{
 		"nvim-treesitter/nvim-treesitter",
-		enabled = "android" ~= PLATFORM,
+		enabled = ~is_android,
 
 		config = function()
-			if PLATFORM == "android" then
+			if is_android then
 				return
 			end
 
@@ -220,7 +217,7 @@ require("lazy").setup({
 
 	{
 		"nvim-treesitter/playground",
-		enabled = "android" ~= PLATFORM,
+		enabled = ~is_android,
 
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter"
